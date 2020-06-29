@@ -85,11 +85,6 @@ public class WeatherActivity extends AppCompatActivity {
         String weatherString=prefs.getString("weather",null);
         String bingPic=prefs.getString("bing_pic",null);
         final String weatherId;
-        if (bingPic!=null){
-            Glide.with(this).load(bingPic).into(bingPicImg);
-        }else {
-            loadBingPic();
-        }
         if (weatherString!=null){
             Weather weather= Utility.handleWeatherResponse(weatherString);
             weatherId=weather.basic.weatherId;
@@ -98,6 +93,11 @@ public class WeatherActivity extends AppCompatActivity {
             weatherId=getIntent().getStringExtra("weather_id");
             weatherLayout.setVisibility(View.VISIBLE);
             requestWeather(weatherId);
+        }
+        if (bingPic!=null){
+            Glide.with(this).load(bingPic).into(bingPicImg);
+        }else {
+            loadBingPic();
         }
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -137,7 +137,6 @@ public class WeatherActivity extends AppCompatActivity {
                 });
             }
             @Override
-
             public void onFailure(Call call,IOException e) {
                 e.printStackTrace();
                 runOnUiThread(new Runnable() {
